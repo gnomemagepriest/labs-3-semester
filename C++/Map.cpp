@@ -1,7 +1,6 @@
 #include "Map.h"
 #include <iostream>
 #include <cstdlib>
-#include <ctime>
 
 Map::Map(int width, int height) : width(width), height(height) {
     tiles.resize(height, std::vector<Tile>(width, Tile(TileType::WALL)));
@@ -11,6 +10,16 @@ void Map::setTile(int x, int y, TileType type) {
     if (x >= 0 && x < width && y >= 0 && y < height) {
         tiles[y][x] = Tile(type);
     }
+}
+
+void Map::setTile(int x, int y, Tile newTile) {
+    if (x >= 0 && x < width && y >= 0 && y < height) {
+        tiles[y][x] = newTile;
+    }
+}
+
+Tile Map::getTile(int x, int y) {
+    return tiles[y][x];
 }
 
 void Map::displayMap() {
@@ -25,10 +34,7 @@ void Map::displayMap() {
             default: break;
             }
 
-            if (currentTile.player) {
-                symbol = currentTile.player->getChar();
-            }
-            else if (currentTile.entity) {
+            if (currentTile.hasEntity()) {
                 symbol = currentTile.entity->getChar();
             }
 
@@ -40,23 +46,22 @@ void Map::displayMap() {
 
 void Map::createCorridor(int x1, int y1, int x2, int y2) {
     // Создание коридора от (x1, y1) до (x2, y2)
-    if (x1 > x2) std::swap(x1, x2); // Убедимся, что x1 <= x2
-    if (y1 > y2) std::swap(y1, y2); // Убедимся, что y1 <= y2
-
+    if (x1 > x2) std::swap(x1, x2); //  x1 <= x2
+    if (y1 > y2) std::swap(y1, y2); //  y1 <= y2
+    int x, y;
     // Если коридор горизонтальный
-    for (int x = x1; x <= x2; ++x) {
+    for (x = x1; x <= x2; ++x) {
         setTile(x, y1, TileType::FLOOR);
     }
 
     // Если коридор вертикальный
-    for (int y = y1; y <= y2; ++y) {
+    for (y = y1; y <= y2; ++y) {
         setTile(x2, y, TileType::FLOOR);
     }
+
 }
 
 bool Map::generateDungeonLevel(int maxFeatures) {
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
-
     // Выкапываем одну комнату в центре карты
     int roomWidth = 5 + std::rand() % 6;
     int roomHeight = 5 + std::rand() % 6;
@@ -76,7 +81,6 @@ bool Map::generateDungeonLevel(int maxFeatures) {
         Room& room = rooms[std::rand() % rooms.size()];
 
         int wall = std::rand() % 4;
-        int corridorX1, corridorX2, corridorY1, corridorY2;
 
         Room newRoom;
         switch (wall) {

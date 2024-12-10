@@ -1,8 +1,6 @@
 #pragma once
 #include "Entity.h"
 
-//class Player;
-
 class Enemy : public Entity
 {
 private:
@@ -10,8 +8,8 @@ private:
 	int Agression;
 public:
 	Enemy();
-	void move(int dx, int dy) const override;
-	void makeTurn(Logger& logger) const override;
+	void move(Map* map, int dx, int dy) override;
+	void makeTurn(Map* map, Logger& logger) override;
 	//friend void Player::getXP(const Enemy& enemy);
 	int getLevel();
 	int getXPValue();

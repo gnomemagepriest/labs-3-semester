@@ -1,10 +1,10 @@
 ﻿#include <iostream>
-#include "Map.h"
+#include "Game.h"
 
 int main() {
-    Map dungeon(40, 20);
-    dungeon.generateDungeonLevel(20);
-    dungeon.displayMap();
+    Game game = Game();
+
+    game.run();
 
     return 0;
 }

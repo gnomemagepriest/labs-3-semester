@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "Player.h"
 #include "Entity.h"
 #include "Item.h"
 
@@ -15,19 +14,19 @@ class Map;
 class Tile
 {
 	friend class Map;
+	friend class Game;
 private:
 	TileType Type;
-	Player* player;
 	Entity* entity;
 	std::vector<Item> items;
 public:
 	Tile(TileType typeOfTile);
-	Tile(Player* playerOnTile, Entity* entityOnTile);
+	Tile(Entity* entityOnTile);
 	void addItem(Item item);
-	bool hasPlayer();
 	bool hasEntity();
 	bool hasItems();
 	bool isWalkable();
 	void onMove();
+	void deleteEntity();
 };
 

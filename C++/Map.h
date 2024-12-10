@@ -1,8 +1,9 @@
 #pragma once
-#include <vector>
 #include "Tile.h"
+#include <vector>
 
 class Map {
+    friend class Game;
 private:
     std::vector<std::vector<Tile>> tiles;
     int width;
@@ -17,6 +18,8 @@ private:
 public:
     Map(int width, int height);
     void setTile(int x, int y, TileType type);
+    Tile getTile(int x, int y);
+    void setTile(int x, int y, Tile newTile);
     void displayMap();
     bool generateDungeonLevel(int maxFeatures);
 };

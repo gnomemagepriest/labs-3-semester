@@ -2,18 +2,12 @@
 
 Tile::Tile(TileType typeOfTile) {
 	Type = typeOfTile;
-	player = nullptr;
 	entity = nullptr;
 }
 
-Tile::Tile(Player* playerOnTile, Entity* entityOnTile) {
+Tile::Tile(Entity* entityOnTile) {
 	Type = TileType::FLOOR;
-	player = playerOnTile;
 	entity = entityOnTile;
-}
-
-bool Tile::hasPlayer() {
-	return player != nullptr;
 }
 
 bool Tile::hasEntity() {
@@ -36,4 +30,8 @@ void Tile::onMove() {
 	if (Type == TileType::DOOR) {
 		Type = TileType::FLOOR;
 	}
+}
+
+void Tile::deleteEntity() {
+	entity = nullptr;
 }

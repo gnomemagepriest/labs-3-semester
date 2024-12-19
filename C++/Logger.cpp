@@ -21,7 +21,7 @@ std::string Logger::getLastEvents() {
 		std::string result = logs[logs.size() - 2];
 	}
 	catch (...) {
-		// ничего не делаем
+		
 	}
 
 	result += logs[logs.size() - 1];

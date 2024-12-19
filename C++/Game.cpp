@@ -6,29 +6,71 @@
 
 Game::Game() {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
-	level1.generateDungeonLevel(30);
+	map.generateDungeonLevel(30);
 	player = Player();
 	input = 0;
 	placeEnemies();
 	running = true;
 }
 
+void Game::playerTurn() {
+	int dx = 0, dy = 0;
+
+	switch (input)
+	{
+	case 'w': {
+		dy = -1;
+		break;
+	}
+	case 's': {
+		dy = 1;
+		break;
+	}
+	case 'a': {
+		dx = -1;
+		break;
+	}
+	case 'd': {
+		dx = 1;
+		break;
+	}
+	default:
+		break;
+	}
+
+	moveEntity(&player, dx, dy);
+}
+
+void Game::moveEntity(Entity* entity, int dx, int dy){
+	int newX = entity->x + dx;
+	int newY = entity->y + dy;
+	if (newX > 0 && newY > 0
+		&& map.getTile(newX, newY).isWalkable() && !map.getTile(newX, newY).hasEntity()) {
+		map.setTile(entity->x, entity->y, Tile(TileType::FLOOR));
+		map.setTile(newX, newY, Tile(entity));
+		entity->x = newX;
+		entity->y = newY;
+	}
+}
+
 Map* Game::getMap() {
-	return &level1;
+	return &map;
 }
 
 void Game::getInput() {
 	input = getchar();
+	while (getchar() != '\n');
 }
 
 void Game::placeEnemies() {
-	enemies.push_back(Enemy());
+	for (int k = 0; k < 10; k++)
+		enemies.push_back(Enemy());
 
 	std::vector<std::tuple<int, int>> freeTiles;
 
-	for (int y = 0; y < level1.height; y++) {
-		for (int x = 0; x < level1.width; x++) {
-			if (!level1.getTile(x, y).hasEntity() && level1.getTile(x, y).isWalkable()) {
+	for (int y = 0; y < map.height; y++) {
+		for (int x = 0; x < map.width; x++) {
+			if (!map.getTile(x, y).hasEntity() && map.getTile(x, y).isWalkable()) {
 				freeTiles.push_back(std::tuple<int, int>(x, y));
 			}
 		}
@@ -47,25 +89,23 @@ void Game::placeEnemies() {
 	}
 	
 	int i = 0;
-	for (Enemy enemy : enemies) {
+	for (Enemy& enemy : enemies) {
 		enemy.x = std::get<0>(freeTiles[i]);
 		enemy.y = std::get<1>(freeTiles[i]);
-		level1.setTile(enemy.x, enemy.y, Tile(&enemy));
-		//std::cout << &enemy << " " << level1.getTile(enemy.x, enemy.y).entity << "\n";
+		map.setTile(enemy.x, enemy.y, Tile(&enemy));
+		std::cout << enemy.x << " " << enemy.y << "\n";
 		i++;
 	}
 
 	player.x = std::get<0>(freeTiles[i]);
 	player.y = std::get<1>(freeTiles[i]);
-	//level1.getTile(player.x, player.y).placeEntity(&player);
-	level1.setTile(player.x, player.y, Tile(&player));
-	//std::cout << &player << " " << level1.getTile(player.x, player.y).entity << "\n";
+	map.setTile(player.x, player.y, Tile(&player));
 }
 
 void Game::run() {
 	while (running && player.isAlive()) {
-		system("cls");
-		level1.displayMap();
+		//system("cls");
+		map.displayMap();
 		std::cout << logger.getLastEvents() << "Input: " << std::endl;
 
 		getInput();
@@ -75,14 +115,14 @@ void Game::run() {
 			running = false;
 		default:
 		{
-			player.setInput(input);
-			player.makeTurn(&level1, logger);
+			playerTurn();
 			break;
 		}
 		}
 
-		for (auto enemy : enemies) {
-			enemy.makeTurn(&level1, logger);
+		for (auto& enemy : enemies) {
+			// Случайное перемещение врагов
+			moveEntity(&enemy, rand() % 3 - 1, rand() % 3 - 1);
 		}
 	}
 }

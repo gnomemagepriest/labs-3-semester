@@ -13,8 +13,8 @@ protected:
 	char Symbol;
 	bool takeDamage(int damageTaken);
 public: 
-	virtual void move(Map* map, int dx, int dy) = 0;
-	virtual void makeTurn(Map* map, Logger& logger) = 0;
+	//virtual void move(Map* map, int dx, int dy) = 0;
+	//virtual void makeTurn(Map* map, Logger& logger) = 0;
 	char getChar();
 	int x, y;
 };

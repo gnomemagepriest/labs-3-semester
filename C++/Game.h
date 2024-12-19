@@ -9,14 +9,16 @@ class Game
 {
 private:
 	Logger logger;
-	Map level1 = Map(40, 20);
+	Map map = Map(40, 20);
 	Player player;
 	std::vector<Enemy> enemies;
+	char input;
 	bool running;
 	void getInput();
 	void placeEnemies();
+	void moveEntity(Entity* entity, int dx, int dy);
+	void playerTurn();
 public:
-	char input;
 	Game();
 	void run();
 	Map* getMap();

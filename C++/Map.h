@@ -17,7 +17,8 @@ private:
     void createCorridor(int centerX1, int centerY1, int centerX2, int centerY2);
 public:
     Map(int width, int height);
-    void setTile(int x, int y, TileType type);
+    int getWidth();
+    int getHeigth();
     Tile* getTile(int x, int y);
     void setTile(int x, int y, Tile newTile);
     void displayMap();

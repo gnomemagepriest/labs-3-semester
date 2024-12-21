@@ -20,3 +20,12 @@ std::string Entity::getName() {
 void Entity::addItem(Item item) {
 	Inventory.push_back(item);
 }
+
+std::pair<int, int> Entity::getPosition() const {
+	return { x, y };
+}
+
+void Entity::setPosition(int newX, int newY) {
+	x = newX;
+	y = newY;
+}

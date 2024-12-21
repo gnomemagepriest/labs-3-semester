@@ -2,14 +2,17 @@
 #include <iostream>
 #include <cstdlib>
 
+// Заполнение карты стеной
 Map::Map(int width, int height) : width(width), height(height) {
     tiles.resize(height, std::vector<Tile>(width, Tile(TileType::WALL)));
 }
 
-void Map::setTile(int x, int y, TileType type) {
-    if (x >= 0 && x < width && y >= 0 && y < height) {
-        tiles[y][x] = Tile(type);
-    }
+int Map::getWidth() {
+    return width;
+}
+
+int Map::getHeigth() {
+    return height;
 }
 
 void Map::setTile(int x, int y, Tile newTile) {
@@ -19,29 +22,31 @@ void Map::setTile(int x, int y, Tile newTile) {
 }
 
 Tile* Map::getTile(int x, int y) {
-    return &tiles[y][x];
+    if (x >= 0 && x < width && y >= 0 && y < height) {
+        return &tiles[y][x];
+    }
+    return nullptr;
 }
 
 void Map::displayMap() {
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            char symbol = 0;
-            Tile currentTile = tiles[y][x];
-            switch (currentTile.Type) {
-            case TileType::WALL: symbol = ' '; break;
-            case TileType::FLOOR: symbol = '.'; break;
-            case TileType::DOOR: symbol = '+'; break;
-            default: break;
-            }
-
+            char symbol = ' ';
+            Tile& currentTile = tiles[y][x];
             if (currentTile.hasEntity()) {
                 symbol = currentTile.entity->getChar();
             }
             else if (currentTile.hasItems()) {
                 symbol = currentTile.getItems()[0].getSymbol();
             }
+            else {
+                switch (currentTile.Type) {
+                case TileType::FLOOR: symbol = '.'; break;
+                case TileType::DOOR: symbol = '+'; break;
+                }
+            }
 
-            std::cout << symbol << ' ';
+            std::cout << symbol;
         }
         std::cout << std::endl;
     }

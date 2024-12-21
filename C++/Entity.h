@@ -12,13 +12,15 @@ class Entity
 protected:
 	std::string Name;
 	int Health, Defense, Level;
+	int x, y;
 	char Symbol;
 	std::vector<Item> Inventory;
 public: 
 	bool takeDamage(int damageTaken);
 	char getChar();
 	std::string getName();
-	int x, y;
 	void addItem(Item item);
+	std::pair<int, int> getPosition() const;
+	void setPosition(int newX, int newY);
 };
 

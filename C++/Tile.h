@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "Entity.h"
-#include "Item.h"
 
 enum class TileType {
 	WALL,
@@ -27,6 +26,9 @@ public:
 	bool hasItems();
 	bool isWalkable();
 	void onMove();
+	void placeEntity(Entity* newEntity);
 	void deleteEntity();
+	void deleteItems();
+	std::vector<Item> getItems();
 };
 

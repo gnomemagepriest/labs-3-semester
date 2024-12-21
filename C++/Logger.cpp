@@ -12,19 +12,14 @@ void Logger::addLine(std::string newLine) {
 }
 
 std::string Logger::getLastEvents() {
-	if (logs.empty())
-		return "";
+    if (logs.empty())
+        return "";
 
-	std::string result;
-	
-	try {
-		std::string result = logs[logs.size() - 2];
-	}
-	catch (...) {
-		
-	}
+    std::string result;
+    if (logs.size() >= 2) {
+        result += logs[logs.size() - 2]; // Добавляем предпоследний элемент и перенос строки
+    }
+    result += logs[logs.size() - 1];
 
-	result += logs[logs.size() - 1];
-
-	return result;
+    return result;
 }

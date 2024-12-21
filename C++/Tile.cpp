@@ -32,6 +32,19 @@ void Tile::onMove() {
 	}
 }
 
+void Tile::placeEntity(Entity* newEntity) {
+	entity = newEntity;
+}
+
 void Tile::deleteEntity() {
 	entity = nullptr;
+}
+
+void Tile::deleteItems() {
+	items.clear();
+}
+
+std::vector<Item> Tile::getItems()
+{
+	return items;
 }

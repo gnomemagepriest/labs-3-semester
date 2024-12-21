@@ -10,5 +10,6 @@ public:
 	//void getXP(Enemy& enemy);
 	bool isAlive();
 	void setInput(char newInput);
+	std::string getInventoryDescription();
 };
 

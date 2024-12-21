@@ -18,7 +18,7 @@ private:
 public:
     Map(int width, int height);
     void setTile(int x, int y, TileType type);
-    Tile getTile(int x, int y);
+    Tile* getTile(int x, int y);
     void setTile(int x, int y, Tile newTile);
     void displayMap();
     bool generateDungeonLevel(int maxFeatures);

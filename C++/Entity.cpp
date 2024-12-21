@@ -12,3 +12,11 @@ bool Entity::takeDamage(int damageTaken) {
 char Entity::getChar() {
 	return Symbol;
 }
+
+std::string Entity::getName() {
+	return Name;
+}
+
+void Entity::addItem(Item item) {
+	Inventory.push_back(item);
+}

@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <vector>
+#include "Item.h"
 
 class Logger;
 class Map;
@@ -11,11 +13,12 @@ protected:
 	std::string Name;
 	int Health, Defense, Level;
 	char Symbol;
-	bool takeDamage(int damageTaken);
+	std::vector<Item> Inventory;
 public: 
-	//virtual void move(Map* map, int dx, int dy) = 0;
-	//virtual void makeTurn(Map* map, Logger& logger) = 0;
+	bool takeDamage(int damageTaken);
 	char getChar();
+	std::string getName();
 	int x, y;
+	void addItem(Item item);
 };
 

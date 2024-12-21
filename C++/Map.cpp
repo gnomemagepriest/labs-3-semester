@@ -18,8 +18,8 @@ void Map::setTile(int x, int y, Tile newTile) {
     }
 }
 
-Tile Map::getTile(int x, int y) {
-    return tiles[y][x];
+Tile* Map::getTile(int x, int y) {
+    return &tiles[y][x];
 }
 
 void Map::displayMap() {
@@ -36,6 +36,9 @@ void Map::displayMap() {
 
             if (currentTile.hasEntity()) {
                 symbol = currentTile.entity->getChar();
+            }
+            else if (currentTile.hasItems()) {
+                symbol = currentTile.getItems()[0].getSymbol();
             }
 
             std::cout << symbol << ' ';

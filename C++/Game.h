@@ -15,7 +15,7 @@ private:
 	char input;
 	bool running;
 	void getInput();
-	void placeEnemies();
+	void placeFeatures();
 	void moveEntity(Entity* entity, int dx, int dy);
 	void playerTurn();
 public:

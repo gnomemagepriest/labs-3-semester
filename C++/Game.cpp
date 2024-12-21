@@ -9,7 +9,7 @@ Game::Game() {
 	map.generateDungeonLevel(30);
 	player = Player();
 	input = 0;
-	placeEnemies();
+	placeFeatures();
 	running = true;
 }
 
@@ -41,13 +41,22 @@ void Game::playerTurn() {
 	moveEntity(&player, dx, dy);
 }
 
-void Game::moveEntity(Entity* entity, int dx, int dy){
+void Game::moveEntity(Entity* entity, int dx, int dy) {
 	int newX = entity->x + dx;
 	int newY = entity->y + dy;
-	if (newX > 0 && newY > 0
-		&& map.getTile(newX, newY).isWalkable() && !map.getTile(newX, newY).hasEntity()) {
-		map.setTile(entity->x, entity->y, Tile(TileType::FLOOR));
-		map.setTile(newX, newY, Tile(entity));
+	Tile* newTile = map.getTile(newX, newY);
+
+	if (newX > 0 && newY > 0 && newTile->isWalkable() && !newTile->hasEntity()) {
+
+		if (newTile->hasItems()) {
+			for (Item item : newTile->getItems()) {
+				entity->addItem(item);
+				logger.addLine(entity->getName() + " has picked up " + item.getName());
+			}
+			newTile->deleteItems();
+		}
+		map.getTile(entity->x, entity->y)->deleteEntity();
+		newTile->placeEntity(entity);
 		entity->x = newX;
 		entity->y = newY;
 	}
@@ -62,7 +71,7 @@ void Game::getInput() {
 	while (getchar() != '\n');
 }
 
-void Game::placeEnemies() {
+void Game::placeFeatures() {
 	for (int k = 0; k < 10; k++)
 		enemies.push_back(Enemy());
 
@@ -70,7 +79,7 @@ void Game::placeEnemies() {
 
 	for (int y = 0; y < map.height; y++) {
 		for (int x = 0; x < map.width; x++) {
-			if (!map.getTile(x, y).hasEntity() && map.getTile(x, y).isWalkable()) {
+			if (!map.getTile(x, y)->hasEntity() && map.getTile(x, y)->isWalkable()) {
 				freeTiles.push_back(std::tuple<int, int>(x, y));
 			}
 		}
@@ -82,7 +91,7 @@ void Game::placeEnemies() {
 		
 	}
 
-	int totalEntities = enemies.size() + 1; // +1 для игрока
+	int totalEntities = enemies.size() + 1 + 3; // +1 для игрока + 3 для предметов (временно)
 	if (freeTiles.size() < totalEntities) {
 		std::cerr << "Недостаточно свободных клеток для размещения всех врагов и игрока." << std::endl;
 		throw 3; // Выход из функции, если недостаточно клеток
@@ -97,6 +106,13 @@ void Game::placeEnemies() {
 		i++;
 	}
 
+	std::vector<Item> itemsToPlace = {Item("Dagger"), Item("Potion"), Item("Shield")};
+	for (Item item : itemsToPlace) {
+		map.getTile(std::get<0>(freeTiles[i]), std::get<1>(freeTiles[i]))->addItem(item);
+		i++;
+	}
+
+
 	player.x = std::get<0>(freeTiles[i]);
 	player.y = std::get<1>(freeTiles[i]);
 	map.setTile(player.x, player.y, Tile(&player));
@@ -104,7 +120,7 @@ void Game::placeEnemies() {
 
 void Game::run() {
 	while (running && player.isAlive()) {
-		//system("cls");
+		system("cls");
 		map.displayMap();
 		std::cout << logger.getLastEvents() << "Input: " << std::endl;
 
@@ -113,6 +129,11 @@ void Game::run() {
 		{
 		case 'q':
 			running = false;
+			break;
+		case 'i':
+			std::cout << player.getInventoryDescription();
+			while (getchar() != '\n');
+			break;
 		default:
 		{
 			playerTurn();

@@ -1,0 +1,99 @@
+main.cpp:
+#include <iostream>
+#include "Game.h"
+
+int main() {
+    Game game = Game();
+
+    game.run();
+
+    return 0;
+}
+
+Entity.h:
+#pragma once
+#include <string>
+#include <vector>
+#include "Item.h"
+
+class Logger;
+class Map;
+class Game;
+
+class Entity
+{
+protected:
+	std::string Name;
+	int Health, Defense, Level;
+	char Symbol;
+	std::vector<Item> Inventory;
+public: 
+	bool takeDamage(int damageTaken);
+	char getChar();
+	std::string getName();
+	int x, y;
+	void addItem(Item item);
+};
+
+
+Entity.cpp:
+#include "Entity.h"
+
+bool Entity::takeDamage(int damageTaken) {
+	damageTaken -= Defense;
+	if (damageTaken > 0) {
+		Health -= damageTaken;
+		return true;
+	}
+	return false;
+}
+
+char Entity::getChar() {
+	return Symbol;
+}
+
+std::string Entity::getName() {
+	return Name;
+}
+
+void Entity::addItem(Item item) {
+	Inventory.push_back(item);
+}
+
+Enemy.h:
+#pragma once
+#include "Entity.h"
+
+class Enemy : public Entity
+{
+private:
+	int XPValue;
+	int Agression;
+public:
+	Enemy();
+	//friend void Player::getXP(const Enemy& enemy);
+	int getLevel();
+	int getXPValue();
+};
+
+
+Enemy.cpp:
+#include "Enemy.h"
+
+Enemy::Enemy() {
+	Name = "Zombie";
+	Health = 5;
+	Defense = 1;
+	Level = 1;
+	Agression = 100;
+	XPValue = 50;
+	Symbol = 'Z';
+}
+
+int Enemy::getLevel() {
+	return Level;
+}
+
+int Enemy::getXPValue() {
+	return XPValue;
+}

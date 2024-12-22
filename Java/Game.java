@@ -1,5 +1,6 @@
 package Java;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,7 +25,7 @@ public class Game {
 
         rand = new Random();
         map.generateDungeonLevel(30);
-        placeEnemies();
+        placeFeatures();
     }
 
     private void playerTurn() {
@@ -51,14 +52,27 @@ public class Game {
     }
 
     private void moveEntity(Entity entity, int dx, int dy) {
-        int newX = entity.x + dx;
-        int newY = entity.y + dy;
-        if (newX > 0 && newY > 0 && newX < map.width && newY < map.height
-            && map.getTile(newX, newY).isWalkable() && !map.getTile(newX, newY).hasEntity()) {
-            map.setTile(entity.x, entity.y, new Tile(TileType.FLOOR));
-            map.setTile(newX, newY, new Tile(entity));
-            entity.x = newX;
-            entity.y = newY;
+        int[] position = entity.getPosition();
+        int newX = position[0] + dx;
+        int newY = position[1] + dy;
+
+        if (!(newX >= 0 && newY >= 0 && newX < map.getWidth() && newY < map.getHeight())) {
+            return;
+        }
+
+        Tile newTile = map.getTile(newX, newY);
+
+        if (newTile.isWalkable() && !newTile.hasEntity()) {
+            if (newTile.hasItems()) {
+                for (Item item : newTile.getItems()) {
+                    entity.addItem(item);
+                    logger.addLine(entity.getName() + " has picked up " + item.getName());
+                }
+                newTile.deleteItems();
+            }
+            map.getTile(position[0], position[1]).deleteEntity();
+            newTile.placeEntity(entity);
+            entity.setPosition(newX, newY);
         }
     }
 
@@ -67,45 +81,44 @@ public class Game {
         input = scanner.next().charAt(0);
     }
 
-    private void placeEnemies() {
+    public void placeFeatures() {
         for (int k = 0; k < 10; k++) {
             enemies.add(new Enemy());
         }
 
         List<int[]> freeTiles = new ArrayList<>();
 
-        for (int y = 0; y < map.height; y++) {
-            for (int x = 0; x < map.width; x++) {
-                if (!map.getTile(x, y).hasEntity() && map.getTile(x, y).isWalkable()) {
-                    System.out.println("Free Tile");
+        for (int y = 0; y < map.getHeight(); y++) {
+            for (int x = 0; x < map.getWidth(); x++) {
+                Tile tile = map.getTile(x, y);
+                if (!tile.hasEntity() && tile.isWalkable()) {
                     freeTiles.add(new int[]{x, y});
                 }
             }
         }
 
-        System.out.println(freeTiles.isEmpty());
-
-        // Перемешать свободные клетки
         java.util.Collections.shuffle(freeTiles);
 
-        int totalEntities = enemies.size() + 1; // +1 для игрока
+        int totalEntities = enemies.size() + 1 + 3;
         if (freeTiles.size() < totalEntities) {
-            System.err.println("Недостаточно свободных клеток для размещения всех врагов и игрока.");
-            throw new RuntimeException("Недостаточно клеток");
+            throw new RuntimeException("Недостаточно свободных клеток для размещения всех врагов и игрока.");
         }
 
         int i = 0;
         for (Enemy enemy : enemies) {
-            enemy.x = freeTiles.get(i)[0];
-            enemy.y = freeTiles.get(i)[1];
-            map.setTile(enemy.x, enemy.y, new Tile(enemy));
-            System.out.println(enemy.x + " " + enemy.y);
+            enemy.setPosition(freeTiles.get(i)[0], freeTiles.get(i)[1]);
+            map.getTile(freeTiles.get(i)[0], freeTiles.get(i)[1]).placeEntity(enemy);
             i++;
         }
 
-        player.x = freeTiles.get(i)[0];
-        player.y = freeTiles.get(i)[1];
-        map.setTile(player.x, player.y, new Tile(player));
+        List<Item> itemsToPlace = List.of(new Item("Dagger"), new Item("Potion"), new Item("Shield"));
+        for (Item item : itemsToPlace) {
+            map.getTile(freeTiles.get(i)[0], freeTiles.get(i)[1]).addItem(item);
+            i++;
+        }
+
+        player.setPosition(freeTiles.get(i)[0], freeTiles.get(i)[1]);
+        map.getTile(freeTiles.get(i)[0], freeTiles.get(i)[1]).placeEntity(player);
     }
 
     public void run() {
@@ -118,6 +131,15 @@ public class Game {
             switch (input) {
                 case 'q':
                     running = false;
+                    break;
+                case 'i':
+                    try {
+                        System.out.println(player.getInventoryDescription());
+                        System.in.read();
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
+                    
                     break;
                 default:
                     playerTurn();

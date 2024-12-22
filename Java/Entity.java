@@ -1,11 +1,14 @@
 package Java;
 
+import java.util.List;
+
 public class Entity
 {
     protected String name;
     protected char symbol;
     protected int health, defense, level;
-    public int x, y;
+    protected int x, y;
+    protected List<Item> inventory;
 
     protected boolean takeDamage(int damageTaken) {
         damageTaken -= defense;
@@ -18,5 +21,22 @@ public class Entity
 
     public char getChar() {
         return symbol;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void addItem(Item item) {
+        inventory.add(item);
+    }
+
+    public int[] getPosition() {
+        return new int[]{x, y};
+    }
+
+    public void setPosition(int newX, int newY) {
+        x = newX;
+        y = newY;
     }
 }

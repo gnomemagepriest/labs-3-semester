@@ -6,8 +6,8 @@ import java.util.Random;
 
 class Map {
     private Tile[][] tiles;
-    public int width;
-    public int height;
+    private int width;
+    private int height;
 
     private static class Room {
         int x, y, width, height;
@@ -47,26 +47,31 @@ class Map {
     }
 
     public void displayMap() {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                char symbol = ' ';
-                Tile currentTile = tiles[y][x];
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            char symbol = ' ';
+            Tile currentTile = tiles[y][x];
+
+            if (currentTile.hasEntity()) {
+                symbol = currentTile.getEntity().getChar();
+            } else if (currentTile.hasItems()) {
+                symbol = currentTile.getItems().get(0).getSymbol();
+            } else {
                 switch (currentTile.getType()) {
-                    case WALL: symbol = ' '; break;
-                    case FLOOR: symbol = '.'; break;
-                    case DOOR: symbol = '+'; break;
-                    default: break;
+                    case FLOOR:
+                        symbol = '.';
+                        break;
+                    case DOOR:
+                        symbol = '+';
+                        break;
                 }
-
-                if (currentTile.hasEntity()) {
-                    symbol = currentTile.getEntity().getChar();
-                }
-
-                System.out.print(symbol);
             }
-            System.out.println();
+
+            System.out.print(symbol);
         }
+        System.out.println();
     }
+}
 
     private void createCorridor(int x1, int y1, int x2, int y2) {
         if (x1 > x2) {
@@ -82,12 +87,10 @@ class Map {
 
         for (int x = x1; x <= x2; x++) {
             tiles[y1][x].setType(TileType.FLOOR);
-           //setTile(x, y1, TileType.FLOOR);
         }
 
         for (int y = y1; y <= y2; y++) {
             tiles[y][x2].setType(TileType.FLOOR);
-            //setTile(x2, y, TileType.FLOOR);
         }
     }
 
@@ -116,25 +119,25 @@ class Map {
 
             Room newRoom = new Room();
             switch (wall) {
-                case 0: // Upper wall
+                case 0:
                     newRoom.x = room.x + random.nextInt(room.width);
                     newRoom.y = room.y - (2 + random.nextInt(3));
                     newRoom.width = 3 + random.nextInt(4);
                     newRoom.height = 2 + random.nextInt(3);
                     break;
-                case 1: // Lower wall
+                case 1:
                     newRoom.x = room.x + random.nextInt(room.width);
                     newRoom.y = room.y + room.height + (1 + random.nextInt(3));
                     newRoom.width = 3 + random.nextInt(4);
                     newRoom.height = 2 + random.nextInt(3);
                     break;
-                case 2: // Left wall
+                case 2:
                     newRoom.x = room.x - (2 + random.nextInt(3));
                     newRoom.y = room.y + random.nextInt(room.height);
                     newRoom.width = 2 + random.nextInt(3);
                     newRoom.height = 3 + random.nextInt(4);
                     break;
-                case 3: // Right wall
+                case 3:
                     newRoom.x = room.x + room.width + (1 + random.nextInt(3));
                     newRoom.y = room.y + random.nextInt(room.height);
                     newRoom.width = 2 + random.nextInt(3);
@@ -142,7 +145,6 @@ class Map {
                     break;
             }
 
-            // Check if the new room can be added
             boolean canAdd = true;
             for (Room r : rooms) {
                 if (newRoom.x < 0 || newRoom.y < 0 || newRoom.x + newRoom.width > width || newRoom.y + newRoom.height > height
@@ -170,6 +172,14 @@ class Map {
             }
         }
 
-        return true; // Successful completion of level generation
+        return true;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

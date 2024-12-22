@@ -30,15 +30,6 @@ class Tile {
         items.add(newItem);
     }
 
-    public TileType getType() {
-        return type;
-    }
-
-    public void setType(TileType newType) {
-        System.out.println(newType + " must replace " + type);
-        type = newType;
-    }
-
     public boolean hasEntity() {
         return entity != null;
     }
@@ -61,7 +52,27 @@ class Tile {
         return entity;
     }
 
+    public void placeEntity(Entity newEntity) {
+        this.entity = newEntity;
+    }
+
     public void deleteEntity() {
-        entity = null;
+        this.entity = null;
+    }
+
+    public void deleteItems() {
+        items.clear();
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setType(TileType newType) {
+        this.type = newType;
+    }
+
+    public TileType getType() {
+        return type;
     }
 }

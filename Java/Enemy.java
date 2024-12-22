@@ -1,10 +1,13 @@
 package Java;
 
+import java.util.ArrayList;
+
 public class Enemy extends Entity {
     private int xpValue;
     private int aggression;
 
     public Enemy() {
+        inventory = new ArrayList<>();
         name = "Zombie";
         health = 5;
         defense = 1;

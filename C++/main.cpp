@@ -2,15 +2,20 @@
 #include "Game.h"
 
 int main() {
-    Game* game = new Game();
+    try {
+        Game* game = new Game();
 
-    if (!game) {
-        return 1;
+        if (!game) {
+            throw std::runtime_error("Игра не была инициализована.");
+        }
+
+        game->run();
+
+        delete game;
     }
-    
-    game->run();
-
-    delete[] game;
+    catch (std::runtime_error e) {
+        std::cout << "Произошла ошибка времени выполнения. Ошибка: " << e.what() << std::endl;
+    }
 
     return 0;
 }

@@ -44,7 +44,6 @@ void Game::playerTurn() {
 void Game::moveEntity(Entity* entity, int dx, int dy) {
 	int newX = entity->getPosition().first + dx;
 	int newY = entity->getPosition().second + dy;
-	//std::cout << entity->getName() << " " <<newX << " " << newY << " " << map.getTile(newX, newY) << "\n";
 	Tile* newTile = map.getTile(newX, newY);
 	if (!newTile)
 		return;
@@ -98,8 +97,7 @@ void Game::placeFeatures() {
 
 	int totalEntities = enemies.size() + 1 + 3; // +1 для игрока + 3 для предметов (временно)
 	if (freeTiles.size() < totalEntities) {
-		std::cerr << "Недостаточно свободных клеток для размещения всех врагов и игрока." << std::endl;
-		throw 3; // Выход из функции, если недостаточно клеток
+		throw std::runtime_error("Недостаточно свободных клеток"); // Выход из функции, если недостаточно клеток
 	}
 	
 	int i = 0;

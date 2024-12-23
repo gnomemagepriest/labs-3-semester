@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "Map.h"
 #include "Logger.h"
+#include <stdexcept>
 
 class Game
 {

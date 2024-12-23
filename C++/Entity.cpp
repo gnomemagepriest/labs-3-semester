@@ -1,13 +1,12 @@
 #include "Entity.h"
 #include <iostream>
 
-bool Entity::takeDamage(int damageTaken) {
+Entity& Entity::takeDamage(int damageTaken) {
 	damageTaken -= Defense;
 	if (damageTaken > 0) {
-		Health -= damageTaken;
-		return true;
+		this->Health -= damageTaken;
 	}
-	return false;
+	return *this;
 }
 
 char Entity::getChar() {

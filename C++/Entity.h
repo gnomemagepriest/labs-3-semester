@@ -15,7 +15,7 @@ private:
 	static int totalEntities;
 public: 
 	Entity();
-	bool takeDamage(int damageTaken);
+	Entity& takeDamage(int damageTaken);
 	char getChar();
 	std::string getName();
 	void addItem(Item item);

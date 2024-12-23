@@ -161,6 +161,11 @@ void Game::getDebugValues() {
 		std::cout << "Player level: " << *player.getLevelPtr()
 			<< "\nPlayer health: " << player.getHealthRef() << std::endl;
 		break;
+	case '3':
+		std::cout << "Player health before takeDamage: " << player.getHealthRef() << std::endl;
+		player.takeDamage(10).takeDamage(10);
+		std::cout << "Player health after takeDamage: " << player.getHealthRef() << std::endl;
+		break;
 	}
 
 	while (getchar() != '\n');

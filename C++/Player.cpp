@@ -32,3 +32,11 @@ std::string Player::getInventoryDescription() {
 	}
 	return result;
 }
+
+int* Player::getLevelPtr() {
+	return &Level; // Возвращаем указатель на уровень
+}
+
+int& Player::getHealthRef() {
+	return Health; // Возвращаем ссылку на здоровье
+}

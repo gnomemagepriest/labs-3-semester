@@ -157,6 +157,10 @@ void Game::getDebugValues() {
 	case '1':
 		std::cout << "Created entities: " << Entity::getTotalEntities();
 		break;
+	case '2':
+		std::cout << "Player level: " << *player.getLevelPtr()
+			<< "\nPlayer health: " << player.getHealthRef() << std::endl;
+		break;
 	}
 
 	while (getchar() != '\n');

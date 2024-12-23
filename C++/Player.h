@@ -11,5 +11,7 @@ public:
 	bool isAlive();
 	void setInput(char newInput);
 	std::string getInventoryDescription();
+	int* getLevelPtr(); // Возврат уровня через указатель
+	int& getHealthRef(); // Возврат здоровья через ссылку
 };
 

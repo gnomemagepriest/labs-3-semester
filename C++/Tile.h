@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Entity.h"
+#include <memory>
 
 enum class TileType {
 	WALL,
@@ -17,11 +18,11 @@ class Tile
 private:
 	TileType Type;
 	Entity* entity;
-	std::vector<Item> items;
+	std::vector<std::shared_ptr<Item>> items;
 public:
 	Tile(TileType typeOfTile);
 	Tile(Entity* entityOnTile);
-	void addItem(Item item);
+	void addItem(std::shared_ptr<Item> item);
 	bool hasEntity();
 	bool hasItems();
 	bool isWalkable();
@@ -29,6 +30,6 @@ public:
 	void placeEntity(Entity* newEntity);
 	void deleteEntity();
 	void deleteItems();
-	std::vector<Item> getItems();
+	std::vector<std::shared_ptr<Item>> getItems();
 };
 

@@ -22,7 +22,7 @@ bool Tile::isWalkable() {
 	return Type != TileType::WALL;
 }
 
-void Tile::addItem(Item newItem) {
+void Tile::addItem(std::shared_ptr<Item> newItem) {
 	items.push_back(newItem);
 }
 
@@ -44,7 +44,7 @@ void Tile::deleteItems() {
 	items.clear();
 }
 
-std::vector<Item> Tile::getItems()
+std::vector<std::shared_ptr<Item>> Tile::getItems()
 {
 	return items;
 }

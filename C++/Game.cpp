@@ -50,9 +50,9 @@ void Game::moveEntity(Entity* entity, int dx, int dy) {
 	if (newX >= 0 && newY >= 0 && newTile->isWalkable() && !newTile->hasEntity()) {
 
 		if (newTile->hasItems()) {
-			for (Item item : newTile->getItems()) {
+			for (auto& item : newTile->getItems()) {
 				entity->addItem(item);
-				logger.addLine(entity->getName() + " has picked up " + item.getName());
+				logger.addLine(entity->getName() + " has picked up " + item->getName());
 			}
 			newTile->deleteItems();
 		}
@@ -106,8 +106,20 @@ void Game::placeFeatures() {
 		i++;
 	}
 
-	std::vector<Item> itemsToPlace = {Item("Dagger"), Item("Potion"), Item("Shield")};
-	for (Item item : itemsToPlace) {
+	std::vector<std::shared_ptr<Item>> itemsToPlace = {
+		std::make_shared<Item>(Item("Potion")),
+		std::make_shared<Item>(Item("Shield"))
+	};
+	player.addItem(std::make_shared<Weapon>(Weapon("Axe", 5)));
+	for (auto item : itemsToPlace) {
+		map.getTile(std::get<0>(freeTiles[i]), std::get<1>(freeTiles[i]))->addItem(item);
+		i++;
+	}
+	std::vector<std::shared_ptr<Weapon>> weaponsToPlace = {
+		std::make_shared<Weapon>(Weapon("Dagger",2)),
+		std::make_shared<Weapon>(Weapon("Sword",5))
+	};
+	for (auto item : weaponsToPlace) {
 		map.getTile(std::get<0>(freeTiles[i]), std::get<1>(freeTiles[i]))->addItem(item);
 		i++;
 	}
@@ -165,6 +177,16 @@ void Game::getDebugValues() {
 		std::cout << "Player health before takeDamage: " << player.getHealthRef() << std::endl;
 		player.takeDamage(10).takeDamage(10);
 		std::cout << "Player health after takeDamage: " << player.getHealthRef() << std::endl;
+		break;
+	case '4':
+		Weapon dagger("Dagger", 2);
+		std::cout << "Simple dagger: " << dagger.getName() << std::endl;
+		Weapon doubleDagger;
+		doubleDagger = dagger + dagger;
+		std::cout << "Double dagger: " << doubleDagger.getName() << std::endl;
+		std::cout << "Double dagger (prefix ++): " << (++doubleDagger).getName() << std::endl;
+		std::cout << "Double dagger (postfix ++): " << (doubleDagger++).getName() << std::endl;
+		std::cout << "Double dagger (after postfix ++): " << doubleDagger.getName() << std::endl;
 		break;
 	}
 

@@ -37,7 +37,7 @@ void Map::displayMap() {
                 symbol = currentTile.entity->getChar();
             }
             else if (currentTile.hasItems()) {
-                symbol = currentTile.getItems()[0].getSymbol();
+                symbol = currentTile.getItems()[0]->getSymbol();
             }
             else {
                 switch (currentTile.Type) {

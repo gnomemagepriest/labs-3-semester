@@ -27,8 +27,8 @@ std::string Player::getInventoryDescription() {
 	}
 
 	std::string result = "You have: \n";
-	for (Item item : Inventory) {
-		result += "- " + item.getName() + "\n";
+	for (const auto& item : Inventory) {
+		result += "- " + item->getName() + "\n";
 	}
 	return result;
 }

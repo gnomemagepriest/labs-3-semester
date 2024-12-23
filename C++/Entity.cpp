@@ -17,7 +17,7 @@ std::string Entity::getName() {
 	return Name;
 }
 
-void Entity::addItem(Item item) {
+void Entity::addItem(std::shared_ptr<Item> item) {
 	Inventory.push_back(item);
 }
 
@@ -33,7 +33,7 @@ void Entity::setPosition(int newX, int newY) {
 int Entity::totalEntities = 0;
 
 Entity::Entity() {
-	std::cout << "created new entity\n";
+	Inventory.clear();
 	totalEntities++;
 }
 

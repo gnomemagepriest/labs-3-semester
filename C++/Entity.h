@@ -10,7 +10,7 @@ protected:
 	int Health, Defense, Level;
 	int x, y;
 	char Symbol;
-	std::vector<Item> Inventory;
+	std::vector<std::shared_ptr<Item>> Inventory;
 private:
 	static int totalEntities;
 public: 
@@ -18,7 +18,7 @@ public:
 	Entity& takeDamage(int damageTaken);
 	char getChar();
 	std::string getName();
-	void addItem(Item item);
+	void addItem(std::shared_ptr<Item> item);
 	std::pair<int, int> getPosition() const;
 	void setPosition(int newX, int newY);
 	static int getTotalEntities();

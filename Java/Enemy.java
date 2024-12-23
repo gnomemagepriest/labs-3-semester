@@ -7,6 +7,7 @@ public class Enemy extends Entity {
     private int aggression;
 
     public Enemy() {
+        super();
         inventory = new ArrayList<>();
         name = "Zombie";
         health = 5;

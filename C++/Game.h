@@ -1,4 +1,5 @@
 #pragma once
+#include "Entity.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Item.h"
@@ -19,6 +20,7 @@ private:
 	void placeFeatures();
 	void moveEntity(Entity* entity, int dx, int dy);
 	void playerTurn();
+	void getDebugValues();
 public:
 	Game();
 	void run();

@@ -7,7 +7,6 @@
 Game::Game() {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	map.generateDungeonLevel(30);
-	player = Player();
 	input = 0;
 	placeFeatures();
 	running = true;
@@ -131,7 +130,11 @@ void Game::run() {
 			break;
 		case 'i':
 			std::cout << player.getInventoryDescription();
-			while (getchar() != '\n');
+			
+			break;
+		case '~':
+			std::cout << "DEBUG MODE\n";
+			getDebugValues();
 			break;
 		default:
 		{
@@ -145,4 +148,16 @@ void Game::run() {
 			moveEntity(&enemy, rand() % 3 - 1, rand() % 3 - 1);
 		}
 	}
+}
+
+void Game::getDebugValues() {
+	getInput();
+	switch (input)
+	{
+	case '1':
+		std::cout << "Created entities: " << Entity::getTotalEntities();
+		break;
+	}
+
+	while (getchar() != '\n');
 }

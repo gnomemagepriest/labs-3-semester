@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-Enemy::Enemy() {
+Enemy::Enemy() : Entity() {
 	Name = "Zombie";
 	Health = 5;
 	Defense = 1;

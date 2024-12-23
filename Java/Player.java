@@ -7,6 +7,7 @@ public class Player extends Entity {
     private char input;
 
     public Player() {
+        super();
         health = 50;
         defense = 5;
         level = 1;

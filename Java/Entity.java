@@ -9,6 +9,15 @@ public class Entity
     protected int health, defense, level;
     protected int x, y;
     protected List<Item> inventory;
+    private static int totalEntities = 0;
+
+    public Entity() {
+        totalEntities++;
+    }
+
+    public static int getTotalEntities() {
+        return totalEntities;
+    }
 
     protected boolean takeDamage(int damageTaken) {
         damageTaken -= defense;

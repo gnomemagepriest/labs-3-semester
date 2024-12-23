@@ -141,6 +141,10 @@ public class Game {
                     }
                     
                     break;
+                case '~':
+                    System.out.println("DEBUG MODE");
+                    getDebugValues();
+                    break;
                 default:
                     playerTurn();
                     break;
@@ -150,6 +154,22 @@ public class Game {
                 // Random movement for enemies
                 moveEntity(enemy, rand.nextInt(3) - 1, rand.nextInt(3) - 1);
             }
+        }
+    }
+
+    private void getDebugValues() {
+        getInput();
+        switch (input)
+        {
+        case '1':
+            System.out.println("Created entities: " + Entity.getTotalEntities());
+            break;
+        }
+
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            //
         }
     }
 }

@@ -1,6 +1,8 @@
 #include "Player.h"
+#include <iostream>
 
-Player::Player() {
+Player::Player() : Entity() {
+	std::cout << "it is player\n";
 	Health = 50;
 	Defense = 5;
 	Level = 1;

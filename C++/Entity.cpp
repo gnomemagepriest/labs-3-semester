@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include <iostream>
 
 bool Entity::takeDamage(int damageTaken) {
 	damageTaken -= Defense;
@@ -28,4 +29,15 @@ std::pair<int, int> Entity::getPosition() const {
 void Entity::setPosition(int newX, int newY) {
 	x = newX;
 	y = newY;
+}
+
+int Entity::totalEntities = 0;
+
+Entity::Entity() {
+	std::cout << "created new entity\n";
+	totalEntities++;
+}
+
+int Entity::getTotalEntities() {
+	return totalEntities;
 }

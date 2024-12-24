@@ -19,17 +19,17 @@ public class Entity
         return totalEntities;
     }
 
-    protected boolean takeDamage(int damageTaken) {
-        damageTaken -= defense;
-        if (damageTaken > 0) {
-            health -= damageTaken;
-            return true;
-        }
-        return false;
+    protected Entity takeDamage(int damageTaken) {
+        health -= DamageCalculator.calculateDamage(damageTaken, defense);
+        return this;
     }
 
     public char getChar() {
         return symbol;
+    }
+
+    public int getHealth() {
+        return health;
     }
 
     public String getName() {
@@ -47,5 +47,12 @@ public class Entity
     public void setPosition(int newX, int newY) {
         x = newX;
         y = newY;
+    }
+}
+
+class DamageCalculator {
+    public static int calculateDamage(int baseDamage, int defense) {
+        int damage = baseDamage - defense;
+        return Math.max(damage, 0); // Урон не может быть отрицательным
     }
 }

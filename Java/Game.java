@@ -164,6 +164,11 @@ public class Game {
         case '1':
             System.out.println("Created entities: " + Entity.getTotalEntities());
             break;
+        case '2':
+            System.out.println("Player health before takeDamage: " + player.getHealth());
+            player.takeDamage(10).takeDamage(6);
+            System.out.println("Player health after takeDamage: " + player.getHealth());
+            break;
         }
 
         try {

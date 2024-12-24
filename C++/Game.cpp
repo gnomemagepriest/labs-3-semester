@@ -4,6 +4,15 @@
 #include <iostream>
 #include <tuple>
 
+void attackEnemy(Player& player, Enemy& enemy) {
+	int damage = player.Attack;
+	enemy.takeDamage(damage);
+	if (enemy.Health <= 0) {
+		player.XP += enemy.XPValue; 
+		enemy.Health = 0;
+	}
+}
+
 Game::Game() {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	map.generateDungeonLevel(30);
@@ -37,7 +46,31 @@ void Game::playerTurn() {
 		break;
 	}
 
-	moveEntity(&player, dx, dy);
+	int targetX = player.getPosition().first + dx;
+	int targetY = player.getPosition().second + dy;
+	if (map.getTile(targetX, targetY)->hasEntity()) {
+		for (Enemy& enemy : enemies) {
+			if (enemy.getPosition() != std::pair<int, int>(targetX, targetY))
+				continue;
+
+			int prevHealth = enemy.getHealth();
+			attackEnemy(player, enemy);
+			int newHealth = enemy.getHealth();
+			logger.addLine("You dealt " + std::to_string(prevHealth-newHealth) + " damage to "
+				+ enemy.getName() + "(" + std::to_string(newHealth) +" left)");
+			if (newHealth <= 0) {
+				logger.addLine(enemy.getName() + " is dead now");
+				for (const auto& item : enemy.getInventory()) {
+					map.getTile(targetX, targetY)->addItem(item);
+				}
+				map.getTile(targetX, targetY)->deleteEntity();
+				enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
+			}
+		}
+	}
+	else {
+		moveEntity(&player, dx, dy);
+	}
 }
 
 void Game::moveEntity(Entity* entity, int dx, int dy) {

@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+class Game;
+
 class Logger
 {
 private:

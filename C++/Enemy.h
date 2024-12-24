@@ -1,6 +1,8 @@
 #pragma once
 #include "Entity.h"
 
+class Player;
+
 class Enemy : public Entity
 {
 private:
@@ -8,8 +10,9 @@ private:
 	int Agression;
 public:
 	Enemy();
-	//friend void Player::getXP(const Enemy& enemy);
 	int getLevel();
 	int getXPValue();
+	friend void attackEnemy(Player& player, Enemy& enemy);
+	bool operator==(const Enemy& other) const;
 };
 

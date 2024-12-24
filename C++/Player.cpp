@@ -2,13 +2,13 @@
 #include <iostream>
 
 Player::Player() : Entity() {
-	std::cout << "it is player\n";
 	Health = 50;
 	Defense = 5;
 	Level = 1;
 	XP = 0;
 	Name = "Player";
 	Symbol = '@';
+	Attack = 5;
 	x = 10;
 	y = 10;
 }

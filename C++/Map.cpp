@@ -28,6 +28,15 @@ Tile* Map::getTile(int x, int y) {
     return nullptr;
 }
 
+Tile* Map::getTile(std::pair<int, int> position) {
+    int x = position.first;
+    int y = position.second;
+    if (x >= 0 && x < width && y >= 0 && y < height) {
+        return &tiles[y][x];
+    }
+    return nullptr;
+}
+
 void Map::displayMap() {
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {

@@ -20,6 +20,7 @@ public:
     int getWidth();
     int getHeigth();
     Tile* getTile(int x, int y);
+    Tile* getTile(std::pair<int, int> position);
     void setTile(int x, int y, Tile newTile);
     void displayMap();
     bool generateDungeonLevel(int maxFeatures);

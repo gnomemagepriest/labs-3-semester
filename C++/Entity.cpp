@@ -17,6 +17,10 @@ std::string Entity::getName() {
 	return Name;
 }
 
+int Entity::getHealth() {
+	return Health;
+}
+
 void Entity::addItem(std::shared_ptr<Item> item) {
 	Inventory.push_back(item);
 }
@@ -39,4 +43,8 @@ Entity::Entity() {
 
 int Entity::getTotalEntities() {
 	return totalEntities;
+}
+
+std::vector<std::shared_ptr<Item>> Entity::getInventory() {
+	return Inventory;
 }

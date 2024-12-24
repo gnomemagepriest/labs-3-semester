@@ -12,6 +12,7 @@ protected:
 	int x, y;
 	char Symbol;
 	std::vector<std::shared_ptr<Item>> Inventory;
+	virtual void onLevelUp() = 0;
 private:
 	static int totalEntities;
 public: 

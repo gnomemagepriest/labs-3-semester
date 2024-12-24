@@ -7,6 +7,7 @@ class Player : public Entity {
 private:
 	int XP;
 	char input;
+	void onLevelUp() override;
 public:
 	Player();
 	bool isAlive();
@@ -15,5 +16,6 @@ public:
 	int* getLevelPtr(); // Возврат уровня через указатель
 	int& getHealthRef(); // Возврат здоровья через ссылку
 	friend void attackEnemy(Player& player, Enemy& enemy);
+	void gainXP(int amount);
 };
 

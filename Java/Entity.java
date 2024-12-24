@@ -2,7 +2,7 @@ package Java;
 
 import java.util.List;
 
-public class Entity
+public abstract class Entity
 {
     protected String name;
     protected char symbol;

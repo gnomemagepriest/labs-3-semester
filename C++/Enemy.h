@@ -8,6 +8,7 @@ class Enemy : public Entity
 private:
 	int XPValue;
 	int Agression;
+	virtual void onLevelUp() override;
 public:
 	Enemy();
 	Enemy& operator=(const Enemy& other);

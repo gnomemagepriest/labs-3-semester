@@ -8,7 +8,7 @@ void attackEnemy(Player& player, Enemy& enemy) {
 	int damage = player.Attack;
 	enemy.takeDamage(damage);
 	if (enemy.Health <= 0) {
-		player.XP += enemy.XPValue; 
+		player.gainXP(enemy.XPValue);
 		enemy.Health = 0;
 	}
 }
@@ -163,7 +163,7 @@ void Game::placeFeatures() {
 
 void Game::run() {
 	while (running && player.isAlive()) {
-		//system("cls");
+		system("cls");
 		map.displayMap();
 		std::cout << logger.getLastEvents() << "Input: " << std::endl;
 
@@ -175,7 +175,7 @@ void Game::run() {
 			break;
 		case 'i':
 			std::cout << player.getInventoryDescription();
-			
+			while (getchar() != '\n');
 			break;
 		case '~':
 			std::cout << "DEBUG MODE\n";
@@ -223,7 +223,7 @@ void Game::getDebugValues() {
 		std::cout << "Double dagger (after postfix ++): " << doubleDagger.getName() << std::endl;
 		break;
 	case '5':
-		std::cout << enemies[0];
+		std::cout << player;
 		break;
 	}
 

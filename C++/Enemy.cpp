@@ -6,9 +6,15 @@ Enemy::Enemy() : Entity() {
 	Defense = 1;
 	Level = 1;
 	Agression = 100;
-	XPValue = 50;
+	XPValue = 51;
 	Attack = 10;
 	Symbol = 'Z';
+}
+
+void Enemy::onLevelUp() {
+	Attack += 1;
+	Health += 5;
+	XPValue += 50;
 }
 
 Enemy& Enemy::operator=(const Enemy& other) {

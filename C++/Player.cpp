@@ -21,6 +21,11 @@ void Player::setInput(char newInput) {
 	input = newInput;
 }
 
+void Player::onLevelUp() {
+	Attack += 1;
+	Health += 10;
+}
+
 std::string Player::getInventoryDescription() {
 	if (Inventory.empty()) {
 		return "You don't have any items.";
@@ -39,4 +44,12 @@ int* Player::getLevelPtr() {
 
 int& Player::getHealthRef() {
 	return Health; // Возвращаем ссылку на здоровье
+}
+
+void Player::gainXP(int amount) {
+	XP += amount;
+	if (XP % 100 > Level) {
+		Level += 1;
+		onLevelUp();
+	}
 }

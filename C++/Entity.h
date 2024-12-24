@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <ostream>
 #include "Item.h"
 
 class Entity
@@ -16,6 +17,8 @@ private:
 public: 
 	Entity();
 	Entity& takeDamage(int damageTaken);
+	Entity& operator=(const Entity& other);
+	friend std::ostream& operator<<(std::ostream& os, const Entity& entity);
 	char getChar();
 	std::string getName();
 	int getHealth();

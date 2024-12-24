@@ -11,6 +11,22 @@ Enemy::Enemy() : Entity() {
 	Symbol = 'Z';
 }
 
+Enemy& Enemy::operator=(const Enemy& other) {
+	if (this == &other) {
+		return *this;
+	}
+	Entity::operator=(other); // Копируем базовую часть
+	XPValue = other.XPValue;
+	Agression = other.Agression;
+	return *this;
+}
+
+std::ostream& operator<<(std::ostream& os, const Enemy& enemy) {
+	os << static_cast<const Entity&>(enemy);
+	os << "XP value: " << enemy.XPValue << "\n";
+	return os;
+}
+
 int Enemy::getLevel() {
 	return Level;
 }

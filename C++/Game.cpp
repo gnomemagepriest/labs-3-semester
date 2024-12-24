@@ -196,6 +196,8 @@ void Game::run() {
 }
 
 void Game::getDebugValues() {
+	Weapon dagger("Dagger", 2);
+	Weapon doubleDagger;
 	getInput();
 	switch (input)
 	{
@@ -212,14 +214,16 @@ void Game::getDebugValues() {
 		std::cout << "Player health after takeDamage: " << player.getHealthRef() << std::endl;
 		break;
 	case '4':
-		Weapon dagger("Dagger", 2);
+		
 		std::cout << "Simple dagger: " << dagger.getName() << std::endl;
-		Weapon doubleDagger;
 		doubleDagger = dagger + dagger;
 		std::cout << "Double dagger: " << doubleDagger.getName() << std::endl;
 		std::cout << "Double dagger (prefix ++): " << (++doubleDagger).getName() << std::endl;
 		std::cout << "Double dagger (postfix ++): " << (doubleDagger++).getName() << std::endl;
 		std::cout << "Double dagger (after postfix ++): " << doubleDagger.getName() << std::endl;
+		break;
+	case '5':
+		std::cout << enemies[0];
 		break;
 	}
 

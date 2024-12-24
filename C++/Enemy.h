@@ -10,6 +10,8 @@ private:
 	int Agression;
 public:
 	Enemy();
+	Enemy& operator=(const Enemy& other);
+	friend std::ostream& operator<<(std::ostream& os, const Enemy& enemy);
 	int getLevel();
 	int getXPValue();
 	friend void attackEnemy(Player& player, Enemy& enemy);

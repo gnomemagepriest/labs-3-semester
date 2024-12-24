@@ -9,6 +9,22 @@ Entity& Entity::takeDamage(int damageTaken) {
 	return *this;
 }
 
+Entity& Entity::operator=(const Entity& other) {
+	if (this == &other) {
+		return *this;
+	}
+	Name = other.Name;
+	Health = other.Health;
+	Defense = other.Defense;
+	Attack = other.Attack;
+	Level = other.Level;
+	x = other.x;
+	y = other.y;
+	Symbol = other.Symbol;
+	Inventory = other.Inventory;
+	return *this;
+}
+
 char Entity::getChar() {
 	return Symbol;
 }
@@ -47,4 +63,15 @@ int Entity::getTotalEntities() {
 
 std::vector<std::shared_ptr<Item>> Entity::getInventory() {
 	return Inventory;
+}
+
+std::ostream& operator<<(std::ostream& os, const Entity& entity) {
+	os << "Name: " << entity.Name << "\n"
+		<< "Health: " << entity.Health << "\n"
+		<< "Defense: " << entity.Defense << "\n"
+		<< "Attack: " << entity.Attack << "\n"
+		<< "Level: " << entity.Level << "\n"
+		<< "Position: (" << entity.x << ", " << entity.y << ")\n"
+		<< "Symbol: " << entity.Symbol << "\n";
+	return os;
 }

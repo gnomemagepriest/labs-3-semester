@@ -127,7 +127,7 @@ void Game::placeFeatures() {
 		
 	}
 
-	int totalEntities = enemies.size() + 1 + 3; // +1 для игрока + 3 для предметов (временно)
+	int totalEntities = enemies.size() + 1 + 6; // +1 для игрока + 3 для предметов
 	if (freeTiles.size() < totalEntities) {
 		throw std::runtime_error("Недостаточно свободных клеток"); // Выход из функции, если недостаточно клеток
 	}
@@ -140,10 +140,9 @@ void Game::placeFeatures() {
 	}
 
 	std::vector<std::shared_ptr<Item>> itemsToPlace = {
-		std::make_shared<Item>(Item("Potion")),
+		std::make_shared<Item>(Item("Book of Enlightenment")),
 		std::make_shared<Item>(Item("Shield"))
 	};
-	player.inventory.addItem(std::make_shared<Weapon>(Weapon("Axe", 5)));
 	for (auto item : itemsToPlace) {
 		map.getTile(std::get<0>(freeTiles[i]), std::get<1>(freeTiles[i]))->addItem(item);
 		i++;
@@ -153,6 +152,14 @@ void Game::placeFeatures() {
 		std::make_shared<Weapon>(Weapon("Sword",5))
 	};
 	for (auto item : weaponsToPlace) {
+		map.getTile(std::get<0>(freeTiles[i]), std::get<1>(freeTiles[i]))->addItem(item);
+		i++;
+	}
+	std::vector<std::shared_ptr<Potion>> potionsToPlace = {
+		std::make_shared<Potion>(Potion("Murky", "Flame")),
+		std::make_shared<Potion>(Potion("Yellow", "Levitation"))
+	};
+	for (auto item : potionsToPlace) {
 		map.getTile(std::get<0>(freeTiles[i]), std::get<1>(freeTiles[i]))->addItem(item);
 		i++;
 	}

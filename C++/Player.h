@@ -16,5 +16,6 @@ public:
 	int& getHealthRef(); // Возврат здоровья через ссылку
 	friend void attackEnemy(Player& player, Enemy& enemy);
 	void gainXP(int amount);
+	friend std::ostream& operator<<(std::ostream& os, const Player& player);
 };
 

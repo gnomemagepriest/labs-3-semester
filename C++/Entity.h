@@ -19,6 +19,7 @@ public:
 	Inventory<std::shared_ptr<Item>> inventory;
 
 	Entity();
+	Entity(std::string Name, int Health, int Defense, int Attack, int Level, char Symbol);
 	Entity& takeDamage(int damageTaken);
 	Entity& operator=(const Entity& other);
 	friend std::ostream& operator<<(std::ostream& os, const Entity& entity);

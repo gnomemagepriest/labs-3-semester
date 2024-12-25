@@ -41,3 +41,9 @@ void Player::gainXP(int amount) {
 		onLevelUp();
 	}
 }
+
+std::ostream& operator<<(std::ostream& os, const Player& player) {
+	os << "Player XP: " << player.XP 
+		<< "\nPlayer level: " << player.Level << "\n";
+	return os;
+}

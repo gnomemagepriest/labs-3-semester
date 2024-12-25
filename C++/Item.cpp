@@ -53,5 +53,21 @@ int Weapon::getDamage() {
 }
 
 std::string Weapon::getName() const {
-    return Name + " +" + std::to_string(enhancement);
+    return Item::getName() + " +" + std::to_string(enhancement);
+}
+
+Potion::Potion() {
+    color = "Clear";
+    Name = "Potion";
+    effect = "Water";
+    Symbol = '{';
+}
+
+Potion::Potion(std::string color, std::string effect) : color(color), effect(effect) {
+    Name = "Potion";
+    Symbol = '{';
+}
+
+std::string Potion::getName() const {
+    return color + " " + Name + " of " + effect;
 }

@@ -52,6 +52,11 @@ Entity::Entity() {
 	totalEntities++;
 }
 
+Entity::Entity(std::string Name, int Health, int Defense, int Attack, int Level, char Symbol)
+	: Name(Name), Health(Health), Defense(Defense), Attack(Attack), Level(Level), Symbol(Symbol) {
+	totalEntities++;
+}
+
 int Entity::getTotalEntities() {
 	return totalEntities;
 }

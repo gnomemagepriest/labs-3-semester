@@ -28,3 +28,13 @@ public:
     int getDamage();
     std::string getName() const override;
 };
+
+class Potion : public Item {
+private:
+    std::string color;
+    std::string effect;
+public:
+    Potion();
+    Potion(std::string color, std::string effect);
+    std::string getName() const override;
+};

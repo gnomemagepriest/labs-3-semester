@@ -11,6 +11,9 @@ Enemy::Enemy() : Entity() {
 	Symbol = 'Z';
 }
 
+Enemy::Enemy(int health, int attack, int defense, int level, int XPValue, int Agression, std::string Name, char Symbol) 
+	: Entity(Name, health, defense, attack, level, Symbol), XPValue(), Agression() {}
+
 void Enemy::onLevelUp() {
 	Attack += 1;
 	Health += 5;

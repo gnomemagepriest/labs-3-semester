@@ -231,6 +231,7 @@ void Game::getDebugValues() {
 		break;
 	case '5':
 		std::cout << player;
+		std::cout << enemies[0];
 		break;
 	}
 

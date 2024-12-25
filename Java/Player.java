@@ -2,7 +2,7 @@ package Java;
 
 import java.util.ArrayList;
 
-public class Player extends Entity {
+public class Player extends Entity implements Killable {
     private int xp;
     private char input;
 
@@ -13,6 +13,12 @@ public class Player extends Entity {
         this.y = 10;
     }
 
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
     public boolean isAlive() {
         return health > 0;
     }

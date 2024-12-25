@@ -37,10 +37,6 @@ public abstract class Entity {
         return symbol;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
     public String getName() {
         return name;
     }

@@ -1,6 +1,6 @@
 package Java;
 
-public class Enemy extends Entity {
+public class Enemy extends Entity implements Killable{
     private int xpValue;
 
     public Enemy() {
@@ -13,6 +13,16 @@ public class Enemy extends Entity {
                 String name, char symbol) {
         super(name, health, defense, attack, level, symbol);
         this.xpValue = xpValue;
+    }
+
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return health > 0;
     }
 
     @Override

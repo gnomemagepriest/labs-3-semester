@@ -1,21 +1,25 @@
 package Java;
 
-import java.util.ArrayList;
-
 public class Enemy extends Entity {
     private int xpValue;
-    private int aggression;
 
     public Enemy() {
-        super();
-        inventory = new ArrayList<>();
-        name = "Zombie";
-        health = 5;
-        defense = 1;
-        level = 1;
-        aggression = 100;
-        xpValue = 50;
-        symbol = 'Z';
+        super("Zombie", 10, 1, 7, 1, 'Z'); // Инициализация через конструктор родительского класса
+        this.xpValue = 50;
+    }
+
+    public Enemy(int health, int attack, int defense, 
+                int level, int xpValue, 
+                String name, char symbol) {
+        super(name, health, defense, attack, level, symbol);
+        this.xpValue = xpValue;
+    }
+
+    @Override
+    protected void onLevelUp() {
+        this.health += 5; 
+        this.defense += 1;
+        this.xpValue += 50;
     }
 
     public int getLevel() {
@@ -24,5 +28,11 @@ public class Enemy extends Entity {
 
     public int getXPValue() {
         return xpValue;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + 
+               "XP value: " + xpValue + "\n";
     }
 }

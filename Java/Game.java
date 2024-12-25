@@ -13,7 +13,7 @@ public class Game {
     private List<Enemy> enemies;
     private char input;
     private boolean running;
-    Random rand;
+    private Random rand;
 
     public Game() {
         logger = new Logger();
@@ -48,7 +48,43 @@ public class Game {
                 break;
         }
 
-        moveEntity(player, dx, dy);
+        int targetX = player.getPosition()[0] + dx;
+        int targetY = player.getPosition()[1] + dy;
+
+        if (map.getTile(targetX, targetY).hasEntity()) {
+            for (Enemy enemy : enemies) {
+                if (enemy.getPosition()[0] == targetX && enemy.getPosition()[1] == targetY) {
+                    int prevHealth = enemy.getHealth();
+                    attackEnemy(player, enemy);
+                    int newHealth = enemy.getHealth();
+
+                    logger.addLine("You dealt " + (prevHealth - newHealth) 
+                        + " damage to " + enemy.getName() 
+                        + " (" + newHealth + " left)");
+
+                    if (newHealth <= 0) {
+                        logger.addLine(enemy.getName() + " is dead now");
+                        for (Item item : enemy.inventory.getItems()) {
+                            map.getTile(targetX, targetY).addItem(item);
+                        }
+                        map.getTile(targetX, targetY).deleteEntity();
+                        enemies.remove(enemy);
+                    }
+                    break;
+                }
+            }
+        } else {
+            moveEntity(player, dx, dy);
+        }
+    }
+
+    private void attackEnemy(Player player, Enemy enemy) {
+        int damage = player.attack;
+        enemy.takeDamage(damage);
+        if (enemy.getHealth() <= 0) {
+            player.gainXP(enemy.getXPValue());
+            enemy.health = 0;
+        }
     }
 
     private void moveEntity(Entity entity, int dx, int dy) {
@@ -56,23 +92,21 @@ public class Game {
         int newX = position[0] + dx;
         int newY = position[1] + dy;
 
-        if (!(newX >= 0 && newY >= 0 && newX < map.getWidth() && newY < map.getHeight())) {
-            return;
-        }
+        if (newX >= 0 && newY >= 0 && newX < map.getWidth() && newY < map.getHeight()) {
+            Tile newTile = map.getTile(newX, newY);
 
-        Tile newTile = map.getTile(newX, newY);
-
-        if (newTile.isWalkable() && !newTile.hasEntity()) {
-            if (newTile.hasItems()) {
-                for (Item item : newTile.getItems()) {
-                    entity.addItem(item);
-                    logger.addLine(entity.getName() + " has picked up " + item.getName());
+            if (newTile.isWalkable() && !newTile.hasEntity()) {
+                if (newTile.hasItems()) {
+                    for (Item item : newTile.getItems()) {
+                        entity.inventory.addItem(item);
+                        logger.addLine(entity.getName() + " has picked up " + item.getName());
+                    }
+                    newTile.deleteItems();
                 }
-                newTile.deleteItems();
+                map.getTile(position[0], position[1]).deleteEntity();
+                newTile.placeEntity(entity);
+                entity.setPosition(newX, newY);
             }
-            map.getTile(position[0], position[1]).deleteEntity();
-            newTile.placeEntity(entity);
-            entity.setPosition(newX, newY);
         }
     }
 
@@ -99,9 +133,9 @@ public class Game {
 
         java.util.Collections.shuffle(freeTiles);
 
-        int totalEntities = enemies.size() + 1 + 3;
-        if (freeTiles.size() < totalEntities) {
-            throw new RuntimeException("Недостаточно свободных клеток для размещения всех врагов и игрока.");
+        int totalEntities = enemies.size() + 1 + 6; // +1 для игрока + 6 для предметов
+            if (freeTiles.size() < totalEntities) {
+                throw new RuntimeException("Недостаточно свободных клеток для размещения всех врагов и игрока.");
         }
 
         int i = 0;
@@ -111,7 +145,15 @@ public class Game {
             i++;
         }
 
-        List<Item> itemsToPlace = List.of(new Item("Dagger"), new Item("Potion"), new Item("Shield"));
+        List<Item> itemsToPlace = List.of(
+            new Item("Book of Enlightenment"),
+            new Item("Shield"),
+            new Weapon("Dagger", 2),
+            new Weapon("Sword", 5),
+            new Potion("Murky", "Flame"),
+            new Potion("Yellow", "Levitation")
+        );
+
         for (Item item : itemsToPlace) {
             map.getTile(freeTiles.get(i)[0], freeTiles.get(i)[1]).addItem(item);
             i++;
@@ -133,13 +175,12 @@ public class Game {
                     running = false;
                     break;
                 case 'i':
+                    System.out.println(player.inventory.getDescription());
                     try {
-                        System.out.println(player.getInventoryDescription());
                         System.in.read();
                     } catch (IOException e) {
                         System.out.println(e);
                     }
-                    
                     break;
                 case '~':
                     System.out.println("DEBUG MODE");
@@ -151,7 +192,7 @@ public class Game {
             }
 
             for (Enemy enemy : enemies) {
-                // Random movement for enemies
+                // Случайное перемещение врагов
                 moveEntity(enemy, rand.nextInt(3) - 1, rand.nextInt(3) - 1);
             }
         }
@@ -159,22 +200,27 @@ public class Game {
 
     private void getDebugValues() {
         getInput();
-        switch (input)
-        {
-        case '1':
-            System.out.println("Created entities: " + Entity.getTotalEntities());
-            break;
-        case '2':
-            System.out.println("Player health before takeDamage: " + player.getHealth());
-            player.takeDamage(10).takeDamage(6);
-            System.out.println("Player health after takeDamage: " + player.getHealth());
-            break;
+        switch (input) {
+            case '1':
+                System.out.println("Created entities: " + Entity.getTotalEntities());
+                break;
+            case '2':
+                System.out.println("Player health before takeDamage: " + player.getHealth());
+                player.takeDamage(10).takeDamage(10);
+                System.out.println("Player health after takeDamage: " + player.getHealth());
+                break;
+            case '3':
+                System.out.println(player);
+                if (!enemies.isEmpty()) {
+                    System.out.println(enemies.get(0));
+                }
+                break;
         }
 
         try {
             System.in.read();
         } catch (IOException e) {
-            //
+            // Обработка исключения
         }
     }
 }

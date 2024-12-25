@@ -7,16 +7,10 @@ public class Player extends Entity {
     private char input;
 
     public Player() {
-        super();
-        health = 50;
-        defense = 5;
-        level = 1;
-        xp = 0;
-        name = "Player";
-        symbol = '@';
-        x = 10;
-        y = 10;
-        inventory = new ArrayList<>();
+        super("Player", 50, 5, 5, 1, '@');
+        this.xp = 0;
+        this.x = 10;
+        this.y = 10;
     }
 
     public boolean isAlive() {
@@ -27,15 +21,24 @@ public class Player extends Entity {
         input = newInput;
     }
 
-    public String getInventoryDescription() {
-        if (inventory.isEmpty()) {
-            return "You don't have any items.";
-        }
+    @Override
+    protected void onLevelUp() {
+        this.defense += 1;
+        this.attack += 1;
+        this.health += 10;
+    }
 
-        StringBuilder result = new StringBuilder("You have:\n");
-        for (Item item : inventory) {
-            result.append("- ").append(item.getName()).append("\n");
+    public void gainXP(int amount) {
+        xp += amount;
+        if (xp >= level * 100) {
+            level += 1;
+            onLevelUp();
         }
-        return result.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Player XP: " + xp + "\n" +
+               "Player level: " + level + "\n";
     }
 }

@@ -1,10 +1,9 @@
 package Java;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class Item implements Cloneable {
+public class Item implements Cloneable, Comparable<Item> {
     protected String name;
     protected char symbol;
     protected List<String> tags;
@@ -53,5 +52,9 @@ public class Item implements Cloneable {
     @Override
     public String toString() {
         return "Item name: " + this.name + " " + tags.toString();
+    }
+
+    public int compareTo(Item item){
+        return this.getName().compareTo(item.getName());
     }
 }

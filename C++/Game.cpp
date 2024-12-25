@@ -169,6 +169,9 @@ void Game::placeFeatures() {
 }
 
 void Game::run() {
+	std::string itemName;
+	std::shared_ptr<Item> item;
+
 	while (running && player.isAlive()) {
 		system("cls");
 		map.displayMap();
@@ -181,8 +184,23 @@ void Game::run() {
 			running = false;
 			break;
 		case 'i':
+			player.inventory.sortItems();
 			std::cout << player.inventory.getDescription();
 			while (getchar() != '\n');
+			break;
+		case 't':
+			player.inventory.sortItems();
+			std::cout << player.inventory.getDescription();
+			std::cout << "What item to drop?: ";
+			std::getline(std::cin, itemName);
+			item = player.inventory.popItem(itemName);
+			if (item) {
+				map.getTile(player.getPosition())->addItem(item);
+				logger.addLine("You dropped " + item->getName());
+			}
+			else {
+				logger.addLine("No such thing in your inventory.");
+			}
 			break;
 		case '~':
 			std::cout << "DEBUG MODE\n";

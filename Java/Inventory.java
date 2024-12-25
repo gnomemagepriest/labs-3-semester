@@ -1,6 +1,7 @@
 package Java;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Inventory<T extends Item> {
@@ -38,5 +39,20 @@ public class Inventory<T extends Item> {
 
     public List<T> getItems() {
         return new ArrayList<>(items);
+    }
+
+    public void sortItems() {
+        Collections.sort(items);
+    }
+
+    public T popItem(String name) {
+        for (int i = 0; i < items.size(); i++) {
+            T item = items.get(i);
+            if (item.getName().equals(name)) {
+                items.remove(i);
+                return item;
+            }
+        }
+        return null;
     }
 }

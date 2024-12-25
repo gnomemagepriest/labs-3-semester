@@ -175,11 +175,26 @@ public class Game {
                     running = false;
                     break;
                 case 'i':
+                    player.inventory.sortItems();
                     System.out.println(player.inventory.getDescription());
                     try {
                         System.in.read();
                     } catch (IOException e) {
                         System.out.println(e);
+                    }
+                    break;
+                case 't':
+                    player.inventory.sortItems();
+                    System.out.println("What item to drop?: ");
+                    Scanner scanner = new Scanner(System.in);
+                    String itemName = scanner.next();
+                    var item = player.inventory.popItem(itemName);
+                    if (item != null) {
+                        map.getTile(player.getPosition()[0], player.getPosition()[1]).addItem(item);
+                        logger.addLine("You dropped " + itemName);
+                    }
+                    else {
+                        logger.addLine("No such item in your inventory.");
                     }
                     break;
                 case '~':

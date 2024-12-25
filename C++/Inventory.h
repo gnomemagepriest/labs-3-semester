@@ -1,6 +1,7 @@
 #pragma once
-#include "Item.h"
 #include <vector>
+#include <algorithm>
+#include <unordered_map>
 
 template <typename T>
 class Inventory {
@@ -15,6 +16,8 @@ public:
     size_t size() const;
     std::string getDescription() const;
     std::vector<T> getItems();
+    void sortItems();
+    T popItem(const std::string& name);
 };
 
 template <typename T>
@@ -56,4 +59,23 @@ std::string Inventory<T>::getDescription() const {
 template<typename T>
 std::vector<T> Inventory<T>::getItems() {
     return items;
+}
+
+template <typename T>
+void Inventory<T>::sortItems() {
+    std::sort(items.begin(), items.end(), [](const T a, const T b) {
+        return a->getName() < b->getName();
+        });
+}
+
+template <typename T>
+T Inventory<T>::popItem(const std::string& name) {
+    for (int i = 0; i < items.size(); i++) {
+        if (items[i]->getName() == name) {
+            T itemToDrop = items[i];
+            removeItem(i);
+            return itemToDrop;
+        }
+    }
+    return nullptr;
 }

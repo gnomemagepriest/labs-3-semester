@@ -9,6 +9,11 @@ public class Item {
         this.symbol = name.charAt(0);
     }
 
+    public Item() {
+        this.name = "";
+        this.symbol = '\0';
+    }
+
     public String getName() {
         return name;
     }

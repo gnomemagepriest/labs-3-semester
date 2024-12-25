@@ -26,18 +26,6 @@ void Player::onLevelUp() {
 	Health += 10;
 }
 
-std::string Player::getInventoryDescription() {
-	if (Inventory.empty()) {
-		return "You don't have any items.";
-	}
-
-	std::string result = "You have: \n";
-	for (const auto& item : Inventory) {
-		result += "- " + item->getName() + "\n";
-	}
-	return result;
-}
-
 int* Player::getLevelPtr() {
 	return &Level; // Возвращаем указатель на уровень
 }

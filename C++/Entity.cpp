@@ -21,7 +21,7 @@ Entity& Entity::operator=(const Entity& other) {
 	x = other.x;
 	y = other.y;
 	Symbol = other.Symbol;
-	Inventory = other.Inventory;
+	inventory = other.inventory;
 	return *this;
 }
 
@@ -37,10 +37,6 @@ int Entity::getHealth() {
 	return Health;
 }
 
-void Entity::addItem(std::shared_ptr<Item> item) {
-	Inventory.push_back(item);
-}
-
 std::pair<int, int> Entity::getPosition() const {
 	return { x, y };
 }
@@ -53,16 +49,11 @@ void Entity::setPosition(int newX, int newY) {
 int Entity::totalEntities = 0;
 
 Entity::Entity() {
-	Inventory.clear();
 	totalEntities++;
 }
 
 int Entity::getTotalEntities() {
 	return totalEntities;
-}
-
-std::vector<std::shared_ptr<Item>> Entity::getInventory() {
-	return Inventory;
 }
 
 std::ostream& operator<<(std::ostream& os, const Entity& entity) {

@@ -3,6 +3,7 @@
 #include <vector>
 #include <ostream>
 #include "Item.h"
+#include "Inventory.h"
 
 class Entity
 {
@@ -11,11 +12,12 @@ protected:
 	int Health, Defense, Attack, Level;
 	int x, y;
 	char Symbol;
-	std::vector<std::shared_ptr<Item>> Inventory;
 	virtual void onLevelUp() = 0;
 private:
 	static int totalEntities;
 public: 
+	Inventory<std::shared_ptr<Item>> inventory;
+
 	Entity();
 	Entity& takeDamage(int damageTaken);
 	Entity& operator=(const Entity& other);
@@ -23,10 +25,8 @@ public:
 	char getChar();
 	std::string getName();
 	int getHealth();
-	void addItem(std::shared_ptr<Item> item);
 	std::pair<int, int> getPosition() const;
 	void setPosition(int newX, int newY);
 	static int getTotalEntities();
-	std::vector<std::shared_ptr<Item>> getInventory();
 };
 

@@ -60,7 +60,7 @@ void Game::playerTurn() {
 				+ enemy.getName() + "(" + std::to_string(newHealth) +" left)");
 			if (newHealth <= 0) {
 				logger.addLine(enemy.getName() + " is dead now");
-				for (const auto& item : enemy.getInventory()) {
+				for (const auto& item : enemy.inventory.getItems()) {
 					map.getTile(targetX, targetY)->addItem(item);
 				}
 				map.getTile(targetX, targetY)->deleteEntity();
@@ -84,7 +84,7 @@ void Game::moveEntity(Entity* entity, int dx, int dy) {
 
 		if (newTile->hasItems()) {
 			for (auto& item : newTile->getItems()) {
-				entity->addItem(item);
+				entity->inventory.addItem(item);
 				logger.addLine(entity->getName() + " has picked up " + item->getName());
 			}
 			newTile->deleteItems();
@@ -143,7 +143,7 @@ void Game::placeFeatures() {
 		std::make_shared<Item>(Item("Potion")),
 		std::make_shared<Item>(Item("Shield"))
 	};
-	player.addItem(std::make_shared<Weapon>(Weapon("Axe", 5)));
+	player.inventory.addItem(std::make_shared<Weapon>(Weapon("Axe", 5)));
 	for (auto item : itemsToPlace) {
 		map.getTile(std::get<0>(freeTiles[i]), std::get<1>(freeTiles[i]))->addItem(item);
 		i++;
@@ -174,7 +174,7 @@ void Game::run() {
 			running = false;
 			break;
 		case 'i':
-			std::cout << player.getInventoryDescription();
+			std::cout << player.inventory.getDescription();
 			while (getchar() != '\n');
 			break;
 		case '~':

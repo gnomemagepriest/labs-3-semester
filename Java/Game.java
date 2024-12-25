@@ -215,6 +215,13 @@ public class Game {
                     System.out.println(enemies.get(0));
                 }
                 break;
+            case '4':
+                try {
+                    cloneTest();
+                }
+                catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
         }
 
         try {
@@ -222,5 +229,24 @@ public class Game {
         } catch (IOException e) {
             // Обработка исключения
         }
+    }
+
+    private void cloneTest() throws CloneNotSupportedException {
+        Item original = new Item("Glass of water");
+
+        System.out.println("\nOriginal item: " + original);
+        Item shallow = (Item) original.clone();
+        System.out.println("\nShallow clone: " + shallow);
+
+        original.addTag("made of glass");
+        System.out.println("\n\nAded tag: " + original);
+        System.out.println("\nShallow clone:" + shallow);
+
+        Item deep = original.deepClone();
+        System.out.println("\n\nDeep clone: " + deep);
+
+        original.addTag("drinkable");
+        System.out.println("\nAdded tag: " + original);
+        System.out.println("\nDeep clone: " + deep);
     }
 }

@@ -1,8 +1,5 @@
 package Java;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Entity {
     protected String name;
     protected char symbol;
@@ -13,7 +10,7 @@ public abstract class Entity {
 
     public Entity() {
         totalEntities++;
-        inventory = new Inventory<Item>();
+        inventory = new Inventory<>();
     }
 
     public Entity(String name, int health, int defense, int attack, int level, char symbol) {
@@ -24,7 +21,7 @@ public abstract class Entity {
         this.level = level;
         this.symbol = symbol;
         totalEntities++;
-        inventory = new Inventory<Item>();
+        inventory = new Inventory<>();
     }
 
     public static int getTotalEntities() {
